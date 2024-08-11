@@ -16,16 +16,8 @@ public class Worker : BackgroundService
     {
         _logger = logger;
         
-                
-        if (parentPath == "start") {
-
-            string? currentPath = Path.GetDirectoryName(System.AppContext.BaseDirectory);
-            if (currentPath != null) {
-                parentPath = Path.GetFullPath(Path.Combine(currentPath, "."));
-            }
-
-
-        }
+         parentPath = Helper.GetExecutionPath();       
+        
 
     }
 
@@ -68,12 +60,12 @@ public class Worker : BackgroundService
         {
                     
            
-            _logger.LogInformation("OnChanged: {loc}", e.Name);
+            
         
             
             
                 
-            var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            
 
            
                

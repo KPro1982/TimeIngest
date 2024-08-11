@@ -17,17 +17,17 @@ namespace TimeIngest
 {
     public static class AnvilEngine
     {
+        public static int entryIndex = 0;
         
         public static void Process()
         {
-            var PythonPath =  @"C:\Users\danie\AppData\Local\Programs\Python\Python312\;C:\Users\danie\AppData\Local\Programs\Python\Python312\Lib\site-packages\";
-            var PythonDLL = @"C:\Users\danie\AppData\Local\Programs\Python\Python312\python312.dll";
-            Runtime.PythonDLL = PythonDLL;
+            var PythonPath =  Helper.GetPythonRoot() + ";" + Helper.GetModulePath();
+            Runtime.PythonDLL = Helper.GetDLLPath();
             PythonEngine.Initialize();
             PythonEngine.PythonPath = PythonPath;
 
             foreach (var file in 
-            Directory.EnumerateFiles(@"G:\projects\TimeIngest\TimeIngest", "*.msg"))
+            Directory.EnumerateFiles(Helper.GetExecutionPath(), "*.msg"))
             {
                 dynamic extract_msg = Py.Import("extract_msg");
 
@@ -69,16 +69,20 @@ namespace TimeIngest
         public static void AppendJson(TimeEntry entry)
         {
             Console.WriteLine(entry.subject);
-            TimeEntries timeEntries = new TimeEntries();
+            TimeEntry[] timeEntries = new TimeEntry[1000];
+            string jsonFilename = Helper.GetJsonPath();
             try{
-                 timeEntries = JsonConvert.DeserializeObject<TimeEntries>(File.ReadAllText(@"G:\timeentries.json"));
+                
+                 timeEntries = JsonConvert.DeserializeObject<TimeEntry[]>(File.ReadAllText(jsonFilename));
             }
             catch { }
             
-            if(CheckJson(entry, timeEntries))
-            {
-                timeEntries.entries.Add(entry);
-            }
+   //         if(CheckJson(entry, timeEntries))
+   //         {
+                timeEntries[entryIndex++] = entry;
+                
+               
+   //         }
                 
             
             
@@ -86,12 +90,12 @@ namespace TimeIngest
             
            
             // serialize JSON to a string and then write string to a file
-            File.WriteAllText(@"G:\timeentries.json", JsonConvert.SerializeObject(timeEntries, Formatting.Indented));
+            File.WriteAllText(jsonFilename, JsonConvert.SerializeObject(timeEntries, Formatting.Indented));
         }
 
-        public static bool CheckJson(TimeEntry entry, TimeEntries timeEntries)  
+        public static bool CheckJson(TimeEntry entry, TimeEntry[] timeEntries)  
         {
-            foreach (var e in timeEntries.entries)
+            foreach (var e in timeEntries)
             {
                 if (e.messageId == entry.messageId)
                 {
@@ -100,6 +104,20 @@ namespace TimeIngest
             }
 
             return true;
+
+        }
+
+        public static void MakeXL()
+        {
+
+            var PythonPath =  Helper.GetPythonRoot() + ";" + Helper.GetModulePath();
+            Runtime.PythonDLL = Helper.GetDLLPath();
+            PythonEngine.Initialize();
+            PythonEngine.PythonPath = PythonPath;
+            dynamic extract_msg = Py.Import("extract_msg");
+
+                  
+
 
         }
    

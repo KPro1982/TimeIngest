@@ -7,6 +7,12 @@ namespace TimeIngest
 {
     public class TimeEntry
     {
+        public TimeEntry()
+        {
+            this.userId = "DCRA";
+            this.timekeepr = "DCRA";
+        }
+
         public string? subject { get; set; }
         public string? bcc { get; set; }
         public string? body { get; set; }
@@ -32,6 +38,7 @@ namespace TimeIngest
         public string? alias { get; set; }   
         public int? length { get; set; } 
 
+    
 
     }
 
