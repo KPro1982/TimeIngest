@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using TimeIngest;
+using Python.Runtime;
 
 
 
@@ -14,6 +15,7 @@ public class Worker : BackgroundService
     public Worker(ILogger<Worker> logger)
     {
         _logger = logger;
+        
                 
         if (parentPath == "start") {
 
@@ -36,8 +38,8 @@ public class Worker : BackgroundService
         {
             if (_logger.IsEnabled(LogLevel.Information))
             {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                _logger.LogInformation("Location: {loc}", parentPath);
+               // _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+               // _logger.LogInformation("Location: {loc}", parentPath);
             }
             await Task.Delay(1000, stoppingToken);
             FileSystemWatcher watcher = new FileSystemWatcher();
@@ -59,26 +61,26 @@ public class Worker : BackgroundService
 
         }
     }
-
+       
 
     public void onChanged(object source, FileSystemEventArgs e) {
         if (e is not null)
         {
                     
-            _logger.LogInformation("Location: {loc}", parentPath);
-            //  string? msg = e.Name != null ? ConvertMsgToJson.Convert(e.Name) : "";
+           
+            _logger.LogInformation("OnChanged: {loc}", e.Name);
+        
             
-            if(e.Name is not null && e.Name.Contains(".msg") && !e.Name.Contains("_processed_")) {
-                string? dirname = Path.GetDirectoryName(e.FullPath); 
-                string newfilename = dirname + "\\" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "_processed_" + e.Name;
-                try {
-                    System.IO.File.Move(e.FullPath, newfilename);
-                }
-                catch {};
+            
+                
+            var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+           
+               
                 
 
 
-            }
+            
         }
     }
 }

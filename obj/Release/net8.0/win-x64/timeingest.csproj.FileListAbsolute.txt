@@ -5,13 +5,6 @@ G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\timeingest.deps.jso
 G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\timeingest.runtimeconfig.json
 G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\timeingest.dll
 G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\timeingest.pdb
-G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\Anvil.dll
-G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\GraphQL.Client.dll
-G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\GraphQL.Client.Abstractions.dll
-G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\GraphQL.Client.Abstractions.Websocket.dll
-G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\GraphQL.Client.Serializer.Newtonsoft.dll
-G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\GraphQL.Client.Serializer.SystemTextJson.dll
-G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\GraphQL.Primitives.dll
 G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\MailKit.dll
 G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\Microsoft.Extensions.Configuration.dll
 G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\Microsoft.Extensions.Configuration.Abstractions.dll
@@ -245,8 +238,6 @@ G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\mscordaccore_amd64_
 G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\mscordbi.dll
 G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\mscorrc.dll
 G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\msquic.dll
-G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\System.Reactive.dll
-G:\projects\TimeIngest\TimeIngest\bin\Release\net8.0\win-x64\System.Reactive.xml
 G:\projects\TimeIngest\TimeIngest\obj\Release\net8.0\win-x64\timeingest.csproj.AssemblyReference.cache
 G:\projects\TimeIngest\TimeIngest\obj\Release\net8.0\win-x64\timeingest.GeneratedMSBuildEditorConfig.editorconfig
 G:\projects\TimeIngest\TimeIngest\obj\Release\net8.0\win-x64\timeingest.AssemblyInfoInputs.cache
