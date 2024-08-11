@@ -43,10 +43,6 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "Anvil": {
-              "target": "Package",
-              "version": "[0.5.0, )"
-            },
             "Microsoft.Extensions.Hosting": {
               "target": "Package",
               "version": "[8.0.0, )"

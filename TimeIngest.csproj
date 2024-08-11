@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Anvil" Version="0.5.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="MsgReader" Version="5.6.4" />
     <PackageReference Include="NETCore.MailKit" Version="2.1.0" />

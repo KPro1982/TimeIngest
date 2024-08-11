@@ -68,13 +68,5 @@ G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\MailKit.dll
 G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\MimeKit.dll
 G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\NETCore.MailKit.dll
 G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\BouncyCastle.Crypto.dll
-G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\Anvil.dll
-G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\GraphQL.Client.dll
-G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\GraphQL.Client.Abstractions.dll
-G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\GraphQL.Client.Abstractions.Websocket.dll
-G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\GraphQL.Client.Serializer.Newtonsoft.dll
-G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\GraphQL.Client.Serializer.SystemTextJson.dll
-G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\GraphQL.Primitives.dll
 G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\Python.Runtime.dll
-G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\System.Reactive.dll
-G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\System.Reactive.xml
+G:\projects\TimeIngest\TimeIngest\obj\Debug\net8.0\TimeIngest.sourcelink.json
