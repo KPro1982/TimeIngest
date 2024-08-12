@@ -70,4 +70,3 @@ G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\NETCore.MailKit.dll
 G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\BouncyCastle.Crypto.dll
 G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\Python.Runtime.dll
 G:\projects\TimeIngest\TimeIngest\obj\Debug\net8.0\TimeIngest.sourcelink.json
-G:\projects\TimeIngest\TimeIngest\bin\Debug\net8.0\timeentries.json

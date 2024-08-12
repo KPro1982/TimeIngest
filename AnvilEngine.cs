@@ -50,7 +50,12 @@ namespace TimeIngest
                 var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(msgJson);
                 try
                 {
-                    timeEntry.date = values["date"];
+                    timeEntry.sentdate = values["date"];
+                    //string default_format = @"%a %b %d %Y %H:%M:%S ";
+                    // Fri, 09 Aug 2024 10:30:47 -0700
+
+                   // DateTime dt = DateTime.strptime(timeEntry.sentdate, default_format);
+                   // Console.WriteLine("Converted Date: " + dt.ToString(""))
                 }
                 catch {}
                 

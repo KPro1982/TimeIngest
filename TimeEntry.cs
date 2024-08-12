@@ -13,16 +13,7 @@ namespace TimeIngest
             this.timekeepr = "DCRA";
         }
 
-        public string? subject { get; set; }
-        public string? bcc { get; set; }
-        public string? body { get; set; }
-        public string? cc { get; set; }
-        public string? date { get; set; }
-        public string? filename { get; set; }
-        public string? messageId { get; set; }
-        public string? recipients { get; set; }
-        public string? sender { get; set; }
-
+        
         public string? userId { get; set; }
          public string? timekeepr { get; set; }
         public string? client { get; set; }       
@@ -37,6 +28,17 @@ namespace TimeIngest
         public string? narrative  { get; set; }   
         public string? alias { get; set; }   
         public int? length { get; set; } 
+        public string? subject { get; set; }
+        public string? bcc { get; set; }
+        public string? body { get; set; }
+        public string? cc { get; set; }
+        public string? date { get; set; }
+        public string? filename { get; set; }
+        public string? messageId { get; set; }
+        public string? recipients { get; set; }
+        public string? sender { get; set; }
+        public string? sentdate { get; set; }
+
 
     
 
