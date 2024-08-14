@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Data.OleDb;
 using System.Data;
+using Org.BouncyCastle.Asn1;
+
 
 namespace TimeIngest
 {
@@ -42,8 +44,22 @@ namespace TimeIngest
             return Helper.GetExecutionPath() + @"\timeentries.json";
         }
 
-        
+        public static DateTime Convert2DateTime(string sentdate)
+        {
 
+            // "Thu, 25 Jul 2024 15:09:49 -0700"
+
+            DateTime dt = DateTime.Parse(sentdate);
+            
+            return dt;
+        }
+
+        public static string Convert2String(DateTime dt)
+        {
+            string dtToString = dt.ToString("yyyyMMdd");
+            return dtToString;
+           
+        }
 
     }
 }

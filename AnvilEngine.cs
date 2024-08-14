@@ -30,6 +30,9 @@ namespace TimeIngest
             Directory.EnumerateFiles(Helper.GetExecutionPath(), "*.msg"))
             {
                 dynamic extract_msg = Py.Import("extract_msg");
+                dynamic sys = Py.Import("sys");
+                sys.path.append(Path.Combine(@"G:\projects\TimeIngest\TimeIngest\"));
+                var Generate = Py.Import("generate");
 
                 
          
@@ -44,20 +47,34 @@ namespace TimeIngest
                 timeEntry.sender    = msg.sender;
                 timeEntry.subject = msg.subject;
                 timeEntry.recipients = msg.to;
-             
 
+                
+
+ 
                 string msgJson = msg.getJson();
                 var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(msgJson);
                 try
                 {
-                    timeEntry.sentdate = values["date"];
-                    //string default_format = @"%a %b %d %Y %H:%M:%S ";
-                    // Fri, 09 Aug 2024 10:30:47 -0700
+                   // timeEntry.sentdate = values["date"];
+                    var subject = new PyString(timeEntry.subject);
+                    var sender = new PyString(timeEntry.sender);
+                    var recipient = new PyString(timeEntry.recipients);
+                    var body = new PyString(timeEntry.body);
 
-                   // DateTime dt = DateTime.strptime(timeEntry.sentdate, default_format);
-                   // Console.WriteLine("Converted Date: " + dt.ToString(""))
+                    var narrative = Generate.InvokeMethod("Narrative", new PyObject[] {recipient, sender, body, subject});
+                    
+                    var clientmatter = Generate.InvokeMethod("ClientMatter", new PyObject[] {subject});
+                    timeEntry.client = clientmatter.ToString();
+                    timeEntry.narrative = narrative.ToString();
+                    Console.WriteLine("Narrative:" + timeEntry.narrative);
                 }
                 catch {}
+                //timeEntry.dateTime = Helper.Convert2DateTime(msg.date);
+                //timeEntry.date = Helper.Convert2String(timeEntry.dateTime);
+
+
+
+
                 
                 AppendJson(timeEntry);
                 

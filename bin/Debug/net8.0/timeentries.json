@@ -2,7 +2,7 @@
   {
     "userId": "DCRA",
     "timekeepr": "DCRA",
-    "client": null,
+    "client": "Wang et al. v. Harris et al.",
     "matter": null,
     "task": null,
     "activity": null,
@@ -11,7 +11,7 @@
     "hoursBilled": null,
     "rate": null,
     "amount": null,
-    "narrative": null,
+    "narrative": "Meet and confer correspondence with lawyerym@hotmail.com regarding the second and third causes of action alleged against Sanchez, Ortiz, and Real in Wang et al. v. Harris et al. (Case No. CIVSB2412923)",
     "alias": null,
     "length": null,
     "subject": "RE: Wang et al. v. Harris et al. (Case No. CIVSB2412923)",
@@ -23,12 +23,13 @@
     "messageId": "\r\n <BY1PR20MB752765FE49660BC4BD131B3FCAAB2@BY1PR20MB7527.namprd20.prod.outlook.com>",
     "recipients": "Daniel Cravens <dcravens@ohaganmeyer.com>",
     "sender": "Nicole Tavis <ntavis@ohaganmeyer.com>",
-    "sentdate": "Thu, 25 Jul 2024 15:09:49 -0700"
+    "sentdate": null,
+    "dateTime": "0001-01-01T00:00:00"
   },
   {
     "userId": "DCRA",
     "timekeepr": "DCRA",
-    "client": null,
+    "client": "none",
     "matter": null,
     "task": null,
     "activity": null,
@@ -37,7 +38,7 @@
     "hoursBilled": null,
     "rate": null,
     "amount": null,
-    "narrative": null,
+    "narrative": "Email communication with IT Support regarding process for sending large attachments outside the firm.",
     "alias": null,
     "length": null,
     "subject": "RE: Sending large attachments",
@@ -49,7 +50,8 @@
     "messageId": "\r\n <DS7PR20MB40155F9BF9C312353EC14ECAC4AB2@DS7PR20MB4015.namprd20.prod.outlook.com>",
     "recipients": "Daniel Cravens <dcravens@ohaganmeyer.com>; IT Support\t<ITSupport@ohaganmeyer.com>",
     "sender": "IT Support <ITSupport@ohaganmeyer.com>",
-    "sentdate": "Thu, 25 Jul 2024 12:30:26 -0700"
+    "sentdate": null,
+    "dateTime": "0001-01-01T00:00:00"
   },
   null,
   null,

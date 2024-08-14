@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeIngest", "TimeIngest.csproj", "{A5CD0139-EBB6-40A3-B52A-310C77140DCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeIngest", "TimeIngest.csproj", "{D65F6107-14A0-45A7-865D-8AAD54EF8E80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A5CD0139-EBB6-40A3-B52A-310C77140DCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A5CD0139-EBB6-40A3-B52A-310C77140DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A5CD0139-EBB6-40A3-B52A-310C77140DCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A5CD0139-EBB6-40A3-B52A-310C77140DCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D65F6107-14A0-45A7-865D-8AAD54EF8E80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D65F6107-14A0-45A7-865D-8AAD54EF8E80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D65F6107-14A0-45A7-865D-8AAD54EF8E80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D65F6107-14A0-45A7-865D-8AAD54EF8E80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

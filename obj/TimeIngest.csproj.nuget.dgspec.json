@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "G:\\projects\\TimeIngest\\TimeIngest\\timeingest.csproj": {}
+    "G:\\projects\\TimeIngest\\TimeIngest\\TimeIngest.csproj": {}
   },
   "projects": {
-    "G:\\projects\\TimeIngest\\TimeIngest\\timeingest.csproj": {
+    "G:\\projects\\TimeIngest\\TimeIngest\\TimeIngest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\projects\\TimeIngest\\TimeIngest\\timeingest.csproj",
-        "projectName": "timeingest",
-        "projectPath": "G:\\projects\\TimeIngest\\TimeIngest\\timeingest.csproj",
+        "projectUniqueName": "G:\\projects\\TimeIngest\\TimeIngest\\TimeIngest.csproj",
+        "projectName": "TimeIngest",
+        "projectPath": "G:\\projects\\TimeIngest\\TimeIngest\\TimeIngest.csproj",
         "packagesPath": "C:\\Users\\danie\\.nuget\\packages\\",
         "outputPath": "G:\\projects\\TimeIngest\\TimeIngest\\obj\\",
         "projectStyle": "PackageReference",
@@ -47,12 +47,6 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
-            "Microsoft.NET.ILLink.Tasks": {
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[8.0.7, )",
-              "autoReferenced": true
-            },
             "MsgReader": {
               "target": "Package",
               "version": "[5.6.4, )"
@@ -81,31 +75,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
-              "version": "[8.0.7, 8.0.7]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Runtime.win-x64",
-              "version": "[8.0.7, 8.0.7]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
-              "version": "[8.0.7, 8.0.7]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
-        }
-      },
-      "runtimes": {
-        "win-x64": {
-          "#import": []
         }
       }
     }

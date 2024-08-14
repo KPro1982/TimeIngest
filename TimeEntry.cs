@@ -37,7 +37,8 @@ namespace TimeIngest
         public string? messageId { get; set; }
         public string? recipients { get; set; }
         public string? sender { get; set; }
-        public string? sentdate { get; set; }
+        public string sentdate { get; set; }
+        public DateTime dateTime { get; set; } 
 
 
     
