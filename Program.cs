@@ -1,8 +1,8 @@
 using TimeIngest;
 
 
-AnvilEngine.Process();
-
+ AnvilEngine.Process();
+ AnvilEngine.Shutdown();
 /*
 var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddHostedService<Worker>();

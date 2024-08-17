@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("timeingest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+97e17d18adc99028b9db354c7b1dc4dd08b670c4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+02fc6a981efdb62ef76ac6a5db87e21661485394")]
 [assembly: System.Reflection.AssemblyProductAttribute("timeingest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("timeingest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

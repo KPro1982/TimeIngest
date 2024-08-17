@@ -44,22 +44,7 @@ namespace TimeIngest
             return Helper.GetExecutionPath() + @"\timeentries.json";
         }
 
-        public static DateTime Convert2DateTime(string sentdate)
-        {
 
-            // "Thu, 25 Jul 2024 15:09:49 -0700"
-
-            DateTime dt = DateTime.Parse(sentdate);
-            
-            return dt;
-        }
-
-        public static string Convert2String(DateTime dt)
-        {
-            string dtToString = dt.ToString("yyyyMMdd");
-            return dtToString;
-           
-        }
 
     }
 }

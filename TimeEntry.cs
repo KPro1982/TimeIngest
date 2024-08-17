@@ -11,6 +11,7 @@ namespace TimeIngest
         {
             this.userId = "DCRA";
             this.timekeepr = "DCRA";
+            this.sentdate = "";
         }
 
         
