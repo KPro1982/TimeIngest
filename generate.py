@@ -28,7 +28,7 @@ clientDict = ""
 aliasesList = ""
 matterList = ""
 
-def ClientMatter(subject, apiKey):
+def ClientMatter(subject, apiKey, aliasList):
     clientDict = ""
     aliasesList = ""
     matterList = ""
@@ -56,58 +56,9 @@ def ClientMatter(subject, apiKey):
     INCORRECT response: The inferred client alias from the email is None.
     CORRECT response: none
 
-    THE LIST OF APPROVED ALIASES FOLLOWS =  
-        Aguilera v. Turner Systems, Inc.
-        Alvarez v. Command Security Services
-        Barnwell v. Gilton Solid Waste Management
-        Bhatia v. Mojio
-        Buksh v. Sixt Rent A Car
-        CAB v. UNITED SITE SERVICES, INC.
-        Casbeer v. Friends of Downtown SLO
-        Castellanos v. Urner’s, Inc.
-        Clement v. Rescue Mission Alliance
-        Cooper Aerial - PSG Contract Review
-        Crowe v. Alternative Power Generation
-        Deus v. Cuvaison, Inc.
-        Diaz v. Smartlink
-        Dufour v. Mann, Urrieta, & Nelson
-        Ghasemi v .Valentia Analytical
-        Gonzalez Davalos v. Nouveau Bakery LLC 
-        Gonzalez v. DS Electric, Inc.
-        Hale v. Belmont Village
-        Hernandez v. Zarate Foods
-        Hicks v. SSA Group, LLC
-        Irmer v. KaiserAir, Inc.
-        Jackson v. Mental Health Systems dba TURN
-        Jermane v. Bethany Home Society of San Joaquin
-        Jimenez v. Wade et al (Real Broker, LLC)
-        Koeppen v. Cooper Aerial
-        Kolkmann v. Alternative Power Generation
-        Kumar DLSE De Novo Appeals
-        McWillie v. Tenet Enterprises
-        Melendez v. Peters Fruit Farms, Inc. 
-        Miller v. Urata & Sons Concrete
-        Nuno v. PCC Logistics
-        Olson v. Allen Property Group, Inc.
-        Oracle Anesthesia, Inc. v. Central Valley Anesthesia Partners
-        Page v. Topix Pharmaceuticals
-        Raj v. WFP Hospitality II LLC
-        Rentner v. Trimble, Fletchers
-        Rocio Tafoya v. Peters Fruit Farms, Inc.
-        Sandoval v. The Nephrology Group, Inc.
-        SBM v. Baker
-        Spooner v. Tri-Ced Economic Development Corporation
-        Staedler v. SSA Group, LLC
-        Steve v. Tulare Firestone, Inc.
-        Sweet Adeline v. Tasty Wings
-        Thomas v. US Tech, Quest Media
-        Turpin v. Sinclair Broadcast Group, Inc.
-        Vaughn v. United Freight Lines
-        Webb v. Doug Tauzer Construction
-        White v. Andy’s Produce Market
-        Wood v. Smartlink
+    THE LIST OF APPROVED ALIASES FOLLOWS =       
     """
-
+    template_string = template_string + aliasesList
 
     prompt = PromptTemplate.from_template(template_string)
     

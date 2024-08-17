@@ -11,6 +11,7 @@ using RtfPipe.Tokens;
 using Org.BouncyCastle.Crypto.Modes;
 using System.Timers;
 using Microsoft.VisualBasic;
+using System.Text.RegularExpressions;
 
 
 
@@ -65,29 +66,28 @@ namespace TimeIngest
                 string msgJson = msg.getJson();
                 var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(msgJson);
                 var clientmatter = "";
- //               try
- //               {
 
-                    timeEntry.sentdate = values["date"];
-                    var api_key = new PyString(GetAPIKey());
-                    var subject = new PyString(timeEntry.subject);
-                    var sender = new PyString(timeEntry.sender);
-                    var recipient = new PyString(timeEntry.recipients);
-                    var body = new PyString(timeEntry.body);
 
-                   // var narrative = Generate.InvokeMethod("Narrative", new PyObject[] {api_key, recipient, sender, body, subject});
-                    
-                    var cmgenerated = Generate.InvokeMethod("ClientMatter", new PyObject[] {subject, api_key});
-                    Console.WriteLine("C/M: " + cmgenerated );
-                    
-                    //timeEntry.client = GetClient(clientmatter.ToString());
+                timeEntry.sentdate = values["date"];
+                var api_key = new PyString(GetAPIKey());
+                var subject = new PyString(timeEntry.subject);
+                var sender = new PyString(timeEntry.sender);
+                var recipient = new PyString(timeEntry.recipients);
+                var body = new PyString(timeEntry.body);
+                var aliasList = new PyString(GetAliasList());
+                Console.WriteLine("AliasList: " + GetAliasList());
+                // var narrative = Generate.InvokeMethod("Narrative", new PyObject[] {api_key, recipient, sender, body, subject});
+                
+                var cmgenerated = Generate.InvokeMethod("ClientMatter", new PyObject[] {subject, api_key, aliasList});
+
+                
+
                     // timeEntry.narrative = narrative.ToString();
-                    // Console.WriteLine("Narrative:" + timeEntry.narrative);
-                    
- //               }
- //               catch {}
 
-                timeEntry.client = GetClient(clientmatter);
+                    
+
+
+                timeEntry.client = GetClient(cmgenerated.ToString());
   
                 string msgdate = msg.date.ToString();
                 timeEntry.date = ConvertDate(msgdate);
@@ -198,27 +198,87 @@ namespace TimeIngest
 
         }
 
-        public static Dictionary<string, string> GetMatterDictionary()
+        public static Dictionary<string, string?>  GetMatterDictionary()
         {
+            Dictionary<string, string?> dict = new Dictionary<string, string?>();
+            foreach (string line in File.ReadLines(GetClientDateFileName()))
+            {
 
-            var dict = File.ReadLines(@"G:\clientdata.csv").Select(line => line.Split(',')).ToDictionary(line => line[0], line => line[1].Replace(".","-"));
+                string[] fields  = CleanCM(line).Split(",");
+                try
+                {
+                    fields[0] = fields[0].Replace(@"""","");
+                    fields[0] = fields[0].Replace(@"+",",");
+                    fields[1] = fields[1].Replace(".","-");
+                    
+                    dict.Add(fields[0], fields[1]);
+                }
+                catch (Exception e) when (e is IndexOutOfRangeException) {};
+                
+                
+                
+
+            }
             return dict;
+            
         }
 
+        public static string CleanCM(string rawline)
+        {
+
+                string pattern = "(?<=\\\"[^\\\"]*),(?=[^\\\"]*\\\")";
+                rawline = Regex.Replace(rawline, pattern, " +");
+                rawline = rawline.Replace(" ", "");
+                pattern = @"\?s";
+                rawline = Regex.Replace(rawline, pattern, "s");
+                rawline = rawline.Replace(@"""","");
+
+                rawline = rawline.TrimEnd(',');
+                return rawline;
+        }
         public static string GetAPIKey()
         {
             var dict = File.ReadLines(@"G:\secret.txt").Select(line => line.Split(',')).ToDictionary(line => line[0], line => line[1]);
             
-            dict.TryGetValue("API_Key", out var apikey);
-            Console.WriteLine("API KEY = " + apikey);
-            return apikey;
+            if(dict.TryGetValue("API_Key", out var apikey))
+            {
+                return apikey;
+            }
+
+            return "";
+    
 
         }
-        public static string GetClient(string clientmatter)
+
+        public static string GetClientDateFileName()
         {
-            Console.WriteLine("----Matter Parse ----");
-            Console.WriteLine(clientmatter);
-            if(GetMatterDictionary().TryGetValue(clientmatter, out string matter))
+            return @"G:\clientdata.csv";
+        }
+        public static string GetAliasList()
+        {
+            string aliaslist = "";
+            foreach (string line in File.ReadLines(GetClientDateFileName()))
+            {
+
+                aliaslist += "; " + CleanCM(line);
+                aliaslist = aliaslist.Replace(@"""","");                                         
+            }
+            return aliaslist;
+            
+        }
+
+        
+        public static string GetClient(string cmstring)
+        {
+            if(cmstring == "")
+            {
+                Console.WriteLine("Empty CM string received     ") ;
+            }
+            else if(cmstring != cmstring){
+                Console.WriteLine("Null CM string received") ;
+            }
+            Console.WriteLine("Match String: " + cmstring);
+            if(GetMatterDictionary().TryGetValue(cmstring, out string matter))
             {
                 Console.WriteLine("Matter = " + matter);
                 return matter;
