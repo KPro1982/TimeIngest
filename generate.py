@@ -28,12 +28,12 @@ clientDict = ""
 aliasesList = ""
 matterList = ""
 
-def ClientMatter(subject):
+def ClientMatter(subject, apiKey):
     clientDict = ""
     aliasesList = ""
     matterList = ""
 
-    llm = ChatOpenAI(temperature=0.3, model_name="gpt-3.5-turbo-16k", api_key="sk-proj-mjyh3qYIN6Gi7k8vLLoNT3BlbkFJl3kHTGkvx22x0Tvsvtfr")
+    llm = ChatOpenAI(temperature=0.3, model_name="gpt-3.5-turbo-16k", api_key=apiKey)
     AliasesString = aliasesList.__str__()
 
     template_string = """
@@ -119,8 +119,8 @@ def ClientMatter(subject):
     output = output_clientmatter.strip()         
     return output
 
-def Narrative(msg_recipient, msg_from, msg_body, msg_subject):
-    llm = ChatOpenAI(temperature=0.3, model_name="gpt-3.5-turbo-16k", api_key="sk-proj-mjyh3qYIN6Gi7k8vLLoNT3BlbkFJl3kHTGkvx22x0Tvsvtfr")
+def Narrative(apiKey, msg_recipient, msg_from, msg_body, msg_subject):
+    llm = ChatOpenAI(temperature=0.3, model_name="gpt-3.5-turbo-16k", api_key=apiKey)
     prompt_template = """
     You are a secretary working for attorney Daniel Cravens. Your job is to create a billing entry that succinctly summarizes the work that Daniel Cravens performed based on the email provided. You must begin your billing entry with a verb. 
     

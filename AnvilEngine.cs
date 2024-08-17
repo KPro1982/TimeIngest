@@ -32,7 +32,7 @@ namespace TimeIngest
             PythonEngine.PythonPath = PythonPath;
 
 
-            var lastfilename = "";
+
             foreach (var file in 
             Directory.EnumerateFiles(Helper.GetExecutionPath(), "*.msg"))
             {
@@ -64,24 +64,30 @@ namespace TimeIngest
  
                 string msgJson = msg.getJson();
                 var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(msgJson);
-                try
-                {
+                var clientmatter = "";
+ //               try
+ //               {
+
                     timeEntry.sentdate = values["date"];
+                    var api_key = new PyString(GetAPIKey());
                     var subject = new PyString(timeEntry.subject);
                     var sender = new PyString(timeEntry.sender);
                     var recipient = new PyString(timeEntry.recipients);
                     var body = new PyString(timeEntry.body);
 
-                   // var narrative = Generate.InvokeMethod("Narrative", new PyObject[] {recipient, sender, body, subject});
+                   // var narrative = Generate.InvokeMethod("Narrative", new PyObject[] {api_key, recipient, sender, body, subject});
                     
-                    var clientmatter = Generate.InvokeMethod("ClientMatter", new PyObject[] {subject});
+                    var cmgenerated = Generate.InvokeMethod("ClientMatter", new PyObject[] {subject, api_key});
+                    Console.WriteLine("C/M: " + cmgenerated );
                     
-                    timeEntry.client = clientmatter.ToString();
+                    //timeEntry.client = GetClient(clientmatter.ToString());
                     // timeEntry.narrative = narrative.ToString();
                     // Console.WriteLine("Narrative:" + timeEntry.narrative);
                     
-                }
-                catch {}
+ //               }
+ //               catch {}
+
+                timeEntry.client = GetClient(clientmatter);
   
                 string msgdate = msg.date.ToString();
                 timeEntry.date = ConvertDate(msgdate);
@@ -114,7 +120,7 @@ namespace TimeIngest
         }
         public static void AppendJson(TimeEntry entry)
         {
-            Console.WriteLine(entry.subject);
+            // Console.WriteLine(entry.subject);
             TimeEntry[] timeEntries = new TimeEntry[1000];
             string jsonFilename = Helper.GetJsonPath();
             try{
@@ -190,6 +196,36 @@ namespace TimeIngest
             sheet["t" + x.ToString()].value = e.body;
             msgWorkbook.save(@"G:\cravens timeentry.xlsx");
 
+        }
+
+        public static Dictionary<string, string> GetMatterDictionary()
+        {
+
+            var dict = File.ReadLines(@"G:\clientdata.csv").Select(line => line.Split(',')).ToDictionary(line => line[0], line => line[1].Replace(".","-"));
+            return dict;
+        }
+
+        public static string GetAPIKey()
+        {
+            var dict = File.ReadLines(@"G:\secret.txt").Select(line => line.Split(',')).ToDictionary(line => line[0], line => line[1]);
+            
+            dict.TryGetValue("API_Key", out var apikey);
+            Console.WriteLine("API KEY = " + apikey);
+            return apikey;
+
+        }
+        public static string GetClient(string clientmatter)
+        {
+            Console.WriteLine("----Matter Parse ----");
+            Console.WriteLine(clientmatter);
+            if(GetMatterDictionary().TryGetValue(clientmatter, out string matter))
+            {
+                Console.WriteLine("Matter = " + matter);
+                return matter;
+            }
+            
+
+            return "0000";
         }
         public static void Shutdown()
         {
