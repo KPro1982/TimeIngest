@@ -201,10 +201,10 @@ namespace TimeIngest
         public static Dictionary<string, string?>  GetMatterDictionary()
         {
             Dictionary<string, string?> dict = new Dictionary<string, string?>();
-            foreach (string line in File.ReadLines(GetClientDateFileName()))
+            foreach (string line in File.ReadLines(GetClientDataFileName()))
             {
-
-                string[] fields  = ParseCM(line);
+                string removed = RemoveCommas(line);
+                string[] fields  = ParseCM(removed);
                 dict.Add(fields[0], fields[1]);               
                 
                 
@@ -222,27 +222,48 @@ namespace TimeIngest
             string[] fields  = rawline.Split(",");
             try
             {
-                fields[0] = fields[0].Replace(@"""","");
-             //   fields[0] = fields[0].Replace(@"+",",");
+                fields[0] = fields[0].Replace("\"","");
                 fields[1] = fields[1].Replace(".","-");
-                
+               
+         
         
             }
             catch (Exception e) when (e is IndexOutOfRangeException) {};
             return fields;
 
         }
+
+        public static string GetAliasList()
+        {
+            string aliaslist = "";
+            foreach (string line in File.ReadLines(GetClientDataFileName()))
+            {
+                string removed = RemoveCommas(line); // remove internal commas
+                string[] parsed = ParseCM(removed);
+                aliaslist += parsed[0] + ";";
+                                 
+            }
+            return aliaslist;
+            
+        }
+        public static string RemoveCommas(string rawline)
+        {
+                string pattern = "(?<=\\\"[^\\\"]*),(?=[^\\\"]*\\\")";
+                rawline = Regex.Replace(rawline, pattern, "");
+                return rawline;
+        }
         public static string CleanCM(string rawline)
         {
 
-                string pattern = "(?<=\\\"[^\\\"]*),(?=[^\\\"]*\\\")";
-                rawline = Regex.Replace(rawline, pattern, "+");
+
                // rawline = rawline.Replace(" ", "");
-                pattern = @"\?s";
+                string pattern = @"\?s";
                 rawline = Regex.Replace(rawline, pattern, "s");
-                rawline = rawline.Replace(@"""","");
+   //             pattern = "\"";
+   //             rawline = Regex.Replace(rawline, pattern, ""); 
                 rawline = rawline.TrimEnd(',');
-                Console.WriteLine("Cleaned: " + rawline);
+                rawline = rawline.TrimEnd(' ');
+             //   Console.WriteLine("Cleaned: " + rawline);
 
                 return rawline;
                
@@ -261,27 +282,16 @@ namespace TimeIngest
 
         }
 
-        public static string GetClientDateFileName()
+        public static string GetClientDataFileName()
         {
             return @"G:\clientdata.csv";
         }
-        public static string GetAliasList()
-        {
-            string aliaslist = "";
-            foreach (string line in File.ReadLines(GetClientDateFileName()))
-            {
-
-                aliaslist += "; " + CleanCM(line);
-                aliaslist = aliaslist.Replace(@"""","");                                         
-            }
-            return aliaslist;
-            
-        }
+        
 
         
         public static string GetClient(string cmstring)
         {
-            cmstring = CleanCM(cmstring);
+            RemoveCommas(cmstring);
             Console.WriteLine("Processing: " + cmstring);
             if(cmstring == "")
             {
@@ -294,6 +304,21 @@ namespace TimeIngest
             {
                 Console.WriteLine("Matter = " + matter);
                 return matter;
+            }
+            else
+            {
+                foreach (var k in GetMatterDictionary())
+                {
+                    Console.WriteLine(k.Key + "::" + cmstring);
+                    if(k.Key.Contains(cmstring))
+                    {
+                        return k.Value;
+                    }
+                }
+
+                return "0000";
+
+
             }
             
 
