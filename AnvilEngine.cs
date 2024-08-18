@@ -12,12 +12,12 @@ using Org.BouncyCastle.Crypto.Modes;
 using System.Timers;
 using Microsoft.VisualBasic;
 using System.Text.RegularExpressions;
+using System.IO.Pipes;
 
 
 
 
-// anvil.connect("server_7UDURRX3SBYJOCU3HKUJCCUV-CWQSJE54273JU7WL");
-// var text = anvil.call("Process_Msg", file);
+
 
 namespace TimeIngest
 {
@@ -32,10 +32,14 @@ namespace TimeIngest
             PythonEngine.Initialize();
             PythonEngine.PythonPath = PythonPath;
 
+            string clientstr = "";
+            string matterstr = "";
+            int successfulParse = 0;
+            int unsuccessfulParse = 0;
 
 
             foreach (var file in 
-            Directory.EnumerateFiles(Helper.GetExecutionPath(), "*.msg"))
+            Directory.EnumerateFiles(GetEmailFolderPath(), "*.msg"))
             {
 
 
@@ -87,12 +91,21 @@ namespace TimeIngest
                     
 
 
-                timeEntry.client = GetClient(cmgenerated.ToString());
-  
+                if(GetCM(cmgenerated.ToString(), out clientstr, out matterstr))
+                {
+                    timeEntry.client = clientstr;
+                    timeEntry.matter = matterstr;
+                    successfulParse += 1;
+                }
+                else{
+                    unsuccessfulParse += 1;
+
+                }
                 string msgdate = msg.date.ToString();
                 timeEntry.date = ConvertDate(msgdate);
-
                 
+                float fSuccessPercent =  successfulParse / (successfulParse + unsuccessfulParse) * 100;
+                Console.WriteLine("Success::Failure (" + successfulParse + "::" + unsuccessfulParse + ") [" + fSuccessPercent.ToString() + "]" );    
                 AppendJson(timeEntry);
                 MakeXL(timeEntry);
                 
@@ -194,6 +207,8 @@ namespace TimeIngest
             sheet["r" + x.ToString()].value = "";
             sheet["s" + x.ToString()].value = e.narrative;
             sheet["t" + x.ToString()].value = e.body;
+            sheet["u" + x.ToString()].value = e.subject;
+            
             msgWorkbook.save(@"G:\cravens timeentry.xlsx");
 
         }
@@ -201,6 +216,7 @@ namespace TimeIngest
         public static Dictionary<string, string?>  GetMatterDictionary()
         {
             Dictionary<string, string?> dict = new Dictionary<string, string?>();
+            dict.Add("None","0000-00000");
             foreach (string line in File.ReadLines(GetClientDataFileName()))
             {
                 string removed = RemoveCommas(line);
@@ -235,7 +251,7 @@ namespace TimeIngest
 
         public static string GetAliasList()
         {
-            string aliaslist = "";
+            string aliaslist = "None;";
             foreach (string line in File.ReadLines(GetClientDataFileName()))
             {
                 string removed = RemoveCommas(line); // remove internal commas
@@ -287,42 +303,48 @@ namespace TimeIngest
             return @"G:\clientdata.csv";
         }
         
-
+        public static string GetEmailFolderPath()
+        {
+            return @"G:\Data\Email";
+        }
         
-        public static string GetClient(string cmstring)
+        public static bool GetCM(string cmstring, out string clientstr, out string matterstr)
         {
             RemoveCommas(cmstring);
-            Console.WriteLine("Processing: " + cmstring);
-            if(cmstring == "")
-            {
-                Console.WriteLine("Empty CM string received     ") ;
-            }
-            else if(cmstring != cmstring){
-                Console.WriteLine("Null CM string received") ;
-            }
+            
+           
             if(GetMatterDictionary().TryGetValue(cmstring, out string matter))
             {
-                Console.WriteLine("Matter = " + matter);
-                return matter;
+                if(matter == "") matter = "0000-00001";
+                string[] cmarr = matter.Split("-");
+                clientstr = cmarr[0];
+                matterstr = cmarr[1];
+                return true;
             }
             else
             {
+                Console.WriteLine("Processing: " + cmstring);
                 foreach (var k in GetMatterDictionary())
                 {
                     Console.WriteLine(k.Key + "::" + cmstring);
                     if(k.Key.Contains(cmstring))
                     {
-                        return k.Value;
+                        string[] cmarr = cmstring.Split("-");
+                        clientstr = cmarr[0];
+                        matterstr = cmarr[1];
+                        
+                        return true;
                     }
                 }
 
-                return "0000";
+                Console.WriteLine("MATTER CLIENT LOOKUP -- FAILURE!!!");
+                clientstr = "0000";
+                matterstr = "00000";
+                return false;
 
 
             }
             
-
-            return "0000";
         }
         public static void Shutdown()
         {

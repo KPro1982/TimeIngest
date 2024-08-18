@@ -32,16 +32,17 @@ def ClientMatter(subject, apiKey, aliasList):
     clientDict = ""
     matterList = ""
 
-    llm = ChatOpenAI(temperature=0.3, model_name="gpt-3.5-turbo-16k", api_key=apiKey)
+    llm = ChatOpenAI(temperature=0.5, model_name="gpt-3.5-turbo-16k", api_key=apiKey)
 
 
     template_string = """
     You are an attorney billing expert. Your job is to infer the client alias from the folowing subject line of an email: {text}       
-    In most cases, the subject of the email will contain the alias. In those cases you will compare the email subject with the LIST OF APPROVED ALIASES and return the alias FROM THE LIST OF APPROVED ALIASES that best matches the subject line.   
+    You will look for one or more words in the subject that matches one of the approved aliases. If there are multiple matches, 
+    you will select the one that matches most closely.
     
     For example, where the email subject is "topix -- quick questions", you would compare this to the list of approved aliases and infer that Page v. Topix Pharmaceuticals is the best fit for the alias because none of the other aliases contain the work topix.
     For example, where the email subject contains the company name "U.S. Tech", you would  this to the list of approved aliases and infer that Thomas v. US Technologies is the best fit for the alias because it matches the name "thomas" and because "Tech" matches "Technologies".
-    For example, where the email subject contains 
+    For example, should consider common abbreviations as matches so that US matches U.S. and Tech matches Technology and Technologies
 
     IMPORTANT: YOUR RESPONSE SHOULD NOT BE CONVERSATIONAL. YOUR REPSONSE ONLY CONTAIN THE ALIAS FROM THE LIST OF APPROVED ALIASES WITHOUT ANY ADDITIONAL WORDS. 
 
