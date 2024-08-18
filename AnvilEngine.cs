@@ -75,7 +75,7 @@ namespace TimeIngest
                 var recipient = new PyString(timeEntry.recipients);
                 var body = new PyString(timeEntry.body);
                 var aliasList = new PyString(GetAliasList());
-                Console.WriteLine("AliasList: " + GetAliasList());
+
                 // var narrative = Generate.InvokeMethod("Narrative", new PyObject[] {api_key, recipient, sender, body, subject});
                 
                 var cmgenerated = Generate.InvokeMethod("ClientMatter", new PyObject[] {subject, api_key, aliasList});
@@ -204,16 +204,9 @@ namespace TimeIngest
             foreach (string line in File.ReadLines(GetClientDateFileName()))
             {
 
-                string[] fields  = CleanCM(line).Split(",");
-                try
-                {
-                    fields[0] = fields[0].Replace(@"""","");
-                    fields[0] = fields[0].Replace(@"+",",");
-                    fields[1] = fields[1].Replace(".","-");
-                    
-                    dict.Add(fields[0], fields[1]);
-                }
-                catch (Exception e) when (e is IndexOutOfRangeException) {};
+                string[] fields  = ParseCM(line);
+                dict.Add(fields[0], fields[1]);               
+                
                 
                 
                 
@@ -222,19 +215,37 @@ namespace TimeIngest
             return dict;
             
         }
+        public static string[] ParseCM(string rawline)
+        {
+            
+            string cleaned = CleanCM(rawline);
+            string[] fields  = rawline.Split(",");
+            try
+            {
+                fields[0] = fields[0].Replace(@"""","");
+             //   fields[0] = fields[0].Replace(@"+",",");
+                fields[1] = fields[1].Replace(".","-");
+                
+        
+            }
+            catch (Exception e) when (e is IndexOutOfRangeException) {};
+            return fields;
 
+        }
         public static string CleanCM(string rawline)
         {
 
                 string pattern = "(?<=\\\"[^\\\"]*),(?=[^\\\"]*\\\")";
-                rawline = Regex.Replace(rawline, pattern, " +");
-                rawline = rawline.Replace(" ", "");
+                rawline = Regex.Replace(rawline, pattern, "+");
+               // rawline = rawline.Replace(" ", "");
                 pattern = @"\?s";
                 rawline = Regex.Replace(rawline, pattern, "s");
                 rawline = rawline.Replace(@"""","");
-
                 rawline = rawline.TrimEnd(',');
+                Console.WriteLine("Cleaned: " + rawline);
+
                 return rawline;
+               
         }
         public static string GetAPIKey()
         {
@@ -270,6 +281,8 @@ namespace TimeIngest
         
         public static string GetClient(string cmstring)
         {
+            cmstring = CleanCM(cmstring);
+            Console.WriteLine("Processing: " + cmstring);
             if(cmstring == "")
             {
                 Console.WriteLine("Empty CM string received     ") ;
@@ -277,7 +290,6 @@ namespace TimeIngest
             else if(cmstring != cmstring){
                 Console.WriteLine("Null CM string received") ;
             }
-            Console.WriteLine("Match String: " + cmstring);
             if(GetMatterDictionary().TryGetValue(cmstring, out string matter))
             {
                 Console.WriteLine("Matter = " + matter);
