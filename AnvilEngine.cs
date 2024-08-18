@@ -60,9 +60,9 @@ namespace TimeIngest
               
                 timeEntry.filename = msg.filename;
                 timeEntry.messageId = msg.messageId;
-                timeEntry.sender    = msg.sender;
-                timeEntry.subject = msg.subject;
-                timeEntry.recipients = msg.to;
+                timeEntry.sender    = "SENDER OF EMAIL" + msg.sender;
+                timeEntry.subject = "SUBJECT OF EMAIL" + msg.subject;
+                timeEntry.recipients = "RECIPIENTS OF EMAIL" + msg.to;
 
                 
 
@@ -79,14 +79,15 @@ namespace TimeIngest
                 var recipient = new PyString(timeEntry.recipients);
                 var body = new PyString(timeEntry.body);
                 var aliasList = new PyString(GetAliasList());
+                var narrativeexamples = new PyString(GetNarrativeExamples());
 
-                // var narrative = Generate.InvokeMethod("Narrative", new PyObject[] {api_key, recipient, sender, body, subject});
+                var narrative = Generate.InvokeMethod("Narrative", new PyObject[] {api_key, recipient, sender, body, subject, narrativeexamples});
                 
                 var cmgenerated = Generate.InvokeMethod("ClientMatter", new PyObject[] {subject, api_key, aliasList});
 
                 
 
-                    // timeEntry.narrative = narrative.ToString();
+                timeEntry.narrative = narrative.ToString();
 
                     
 
@@ -262,6 +263,18 @@ namespace TimeIngest
             return aliaslist;
             
         }
+
+         public static string GetNarrativeExamples()
+        {
+            string examples = "";
+            foreach (string line in File.ReadLines(GetExampleFileName()))
+            {
+                examples += line;
+                                 
+            }
+            return examples;
+            
+        }
         public static string RemoveCommas(string rawline)
         {
                 string pattern = "(?<=\\\"[^\\\"]*),(?=[^\\\"]*\\\")";
@@ -302,6 +315,12 @@ namespace TimeIngest
         {
             return @"G:\clientdata.csv";
         }
+        public static string GetExampleFileName()
+        {
+            return @"G:\timeexamples.csv";
+        }
+
+        
         
         public static string GetEmailFolderPath()
         {
@@ -329,9 +348,18 @@ namespace TimeIngest
                     Console.WriteLine(k.Key + "::" + cmstring);
                     if(k.Key.Contains(cmstring))
                     {
-                        string[] cmarr = cmstring.Split("-");
-                        clientstr = cmarr[0];
-                        matterstr = cmarr[1];
+                        try 
+                        {
+                            string[] cmarr = cmstring.Split("-");
+                            clientstr = cmarr[0];
+                            matterstr = cmarr[1];
+                        }
+                        catch 
+                        {
+                            clientstr = "";
+                            matterstr = "";
+
+                        }
                         
                         return true;
                     }

@@ -70,7 +70,7 @@ def ClientMatter(subject, apiKey, aliasList):
     output = output_clientmatter.strip()         
     return output
 
-def Narrative(apiKey, msg_recipient, msg_from, msg_body, msg_subject):
+def Narrative(apiKey, msg_recipient, msg_from, msg_body, msg_subject, NarrativeExamples):
     llm = ChatOpenAI(temperature=0.3, model_name="gpt-3.5-turbo-16k", api_key=apiKey)
     prompt_template = """
     You are a secretary working for attorney Daniel Cravens. Your job is to create a billing entry that succinctly summarizes the work that Daniel Cravens performed based on the email provided. You must begin your billing entry with a verb. 
@@ -82,8 +82,16 @@ def Narrative(apiKey, msg_recipient, msg_from, msg_body, msg_subject):
     EXAMPLE 3: Where Daniel Cravens is providing instructions to a person within the ohaganmeyer.com domain, the work performed should be written work product that will ultimately be produced but should not mention the name of the people. For example, where the Daniel instructions Caleb to prepare a shell for a motion to compel, the entry would be: "Update and revise motion to compel"
     
     Email to summarize: "{text}"
+
+    Do NOT use the following verbs: file, schedule, transmit, code
     
-    """
+    In drafting the billing entry, you may consider the following examples for word choice and formatting. 
+    
+
+
+    EXAMPLE BILLING ENTRIES:
+    """ 
+    prompt_template = prompt_template + NarrativeExamples
     prompt = PromptTemplate.from_template(prompt_template)
     chain = load_summarize_chain(llm, chain_type="stuff", prompt=prompt)
     stuffedshit = msg_subject + msg_from + msg_recipient + msg_body
