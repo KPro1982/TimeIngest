@@ -15,13 +15,12 @@ from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_community.document_loaders import OutlookMessageLoader
 from langchain_community.chat_models import ChatOpenAI
-from langchain_community.llms import openai
+# from langchain_community.llms import openai
 from langchain.chains.summarize import load_summarize_chain
 from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-
-
-
+from langchain_openai import ChatOpenAI
+from langchain_text_splitters import TokenTextSplitter
 
 
 clientDict = ""
@@ -66,14 +65,16 @@ def ClientMatter(subject, apiKey, aliasList):
 
     
     doc =  Document(page_content=subject)
-    output_clientmatter = chain.run([doc])
-    output = output_clientmatter.strip()         
+    output_clientmatter = chain.invoke([doc])
+    output = output_clientmatter        
     return output
 
 def Narrative(apiKey, msg_recipient, msg_from, msg_body, msg_subject, NarrativeExamples):
     llm = ChatOpenAI(temperature=0.3, model_name="gpt-3.5-turbo-16k", api_key=apiKey)
+ 
+    
     prompt_template = """
-    You are a secretary working for attorney Daniel Cravens. Your job is to create a billing entry that succinctly summarizes the work that Daniel Cravens performed based on the email provided. You must begin your billing entry with a verb. 
+    You are a secretary working for attorney Daniel Cravens. Your job is to create a billing entry that succinctly summarizes the work that Daniel Cravens performed based on the email provided. You must begin your billing entry with a verb. You billing entry should be as detailed as possible.
     
     EXAMPLE 1: Where Daniel Cravens is emailing with a person outside of the ohaganmeyer.com domain, begin the billing entry with "Email communication with [insert name of person to whom Daniel was communicating] concerning [description of work]. 
     
@@ -91,11 +92,16 @@ def Narrative(apiKey, msg_recipient, msg_from, msg_body, msg_subject, NarrativeE
 
     EXAMPLE BILLING ENTRIES:
     """ 
-    prompt_template = prompt_template + NarrativeExamples
     prompt = PromptTemplate.from_template(prompt_template)
     chain = load_summarize_chain(llm, chain_type="stuff", prompt=prompt)
     stuffedshit = msg_subject + msg_from + msg_recipient + msg_body
+    max_size = 40000
+    if(len(stuffedshit) > max_size):
+        charstoremove =  max_size - len(stuffedshit)
+        stuffedshit = stuffedshit[:charstoremove]
     docs =  Document(page_content=stuffedshit)
     output_summary = chain.run([docs])
     print("Narrative: ", output_summary)
     return output_summary
+
+

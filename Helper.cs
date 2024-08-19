@@ -44,7 +44,40 @@ namespace TimeIngest
             return Helper.GetExecutionPath() + @"\timeentries.json";
         }
 
+          public static string GetClientDataFileName()
+        {
+            return @"G:\clientdata.csv";
+        }
+        public static string GetExampleFileName()
+        {
+            return @"G:\timeexamples.csv";
+        }
 
+        
+        
+        public static string GetEmailFolderPath()
+        {
+            return @"G:\Data\Email";
+        }
+
+        public static string ConvertDate(string msgdate)
+        {
+            DateTime dt = DateTime.Parse(msgdate);
+            string dtstr = dt.ToString("yyyyMMdd");
+            
+
+            return dtstr;
+;
+        }
+        public static string ConvertTime(string msgtime)
+        {
+            DateTime dt = DateTime.Parse(msgtime);
+            string dtstr = dt.ToString("H:mm:ss");
+            
+
+            return dtstr;
+;
+        }
 
     }
 }

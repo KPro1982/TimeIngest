@@ -39,7 +39,7 @@ namespace TimeIngest
 
 
             foreach (var file in 
-            Directory.EnumerateFiles(GetEmailFolderPath(), "*.msg"))
+            Directory.EnumerateFiles(Helper.GetEmailFolderPath(), "*.msg"))
             {
 
 
@@ -60,9 +60,9 @@ namespace TimeIngest
               
                 timeEntry.filename = msg.filename;
                 timeEntry.messageId = msg.messageId;
-                timeEntry.sender    = "SENDER OF EMAIL" + msg.sender;
-                timeEntry.subject = "SUBJECT OF EMAIL" + msg.subject;
-                timeEntry.recipients = "RECIPIENTS OF EMAIL" + msg.to;
+                timeEntry.sender    = "SENDER OF EMAIL: " + msg.sender;
+                timeEntry.subject = "SUBJECT OF EMAIL: " + msg.subject;
+                timeEntry.recipients = "RECIPIENTS OF EMAIL: " + msg.to;
 
                 
 
@@ -103,10 +103,12 @@ namespace TimeIngest
 
                 }
                 string msgdate = msg.date.ToString();
-                timeEntry.date = ConvertDate(msgdate);
+                timeEntry.date = Helper.ConvertDate(msgdate);
                 
                 float fSuccessPercent =  successfulParse / (successfulParse + unsuccessfulParse) * 100;
-                Console.WriteLine("Success::Failure (" + successfulParse + "::" + unsuccessfulParse + ") [" + fSuccessPercent.ToString() + "]" );    
+                //Console.WriteLine("Success::Failure (" + successfulParse + "::" + unsuccessfulParse + ") [" + fSuccessPercent.ToString() + "]" );    
+                string msgid = msg.messageId.ToString();
+                AppendEmailManifest(msgid);
                 AppendJson(timeEntry);
                 MakeXL(timeEntry);
                 
@@ -123,15 +125,7 @@ namespace TimeIngest
 
         }
 
-        public static string ConvertDate(string msgdate)
-        {
-                DateTime dt = DateTime.Parse(msgdate);
-                string dtstr = dt.ToString("yyyyMMdd");
-                
 
-                return dtstr;
-;
-        }
         public static void AppendJson(TimeEntry entry)
         {
             // Console.WriteLine(entry.subject);
@@ -156,6 +150,13 @@ namespace TimeIngest
            
             // serialize JSON to a string and then write string to a file
             File.WriteAllText(jsonFilename, JsonConvert.SerializeObject(timeEntries, Formatting.Indented));
+        }
+
+        public static void AppendEmailManifest(string messageId) 
+        {
+
+            string path = @"G:\Manifest.txt";
+            File.AppendAllLines(path, new [] { messageId });
         }
 
         public static bool CheckJson(TimeEntry entry, TimeEntry[] timeEntries)  
@@ -218,7 +219,7 @@ namespace TimeIngest
         {
             Dictionary<string, string?> dict = new Dictionary<string, string?>();
             dict.Add("None","0000-00000");
-            foreach (string line in File.ReadLines(GetClientDataFileName()))
+            foreach (string line in File.ReadLines(Helper.GetClientDataFileName()))
             {
                 string removed = RemoveCommas(line);
                 string[] fields  = ParseCM(removed);
@@ -253,7 +254,7 @@ namespace TimeIngest
         public static string GetAliasList()
         {
             string aliaslist = "None;";
-            foreach (string line in File.ReadLines(GetClientDataFileName()))
+            foreach (string line in File.ReadLines(Helper.GetClientDataFileName()))
             {
                 string removed = RemoveCommas(line); // remove internal commas
                 string[] parsed = ParseCM(removed);
@@ -267,7 +268,7 @@ namespace TimeIngest
          public static string GetNarrativeExamples()
         {
             string examples = "";
-            foreach (string line in File.ReadLines(GetExampleFileName()))
+            foreach (string line in File.ReadLines(Helper.GetExampleFileName()))
             {
                 examples += line;
                                  
@@ -311,21 +312,7 @@ namespace TimeIngest
 
         }
 
-        public static string GetClientDataFileName()
-        {
-            return @"G:\clientdata.csv";
-        }
-        public static string GetExampleFileName()
-        {
-            return @"G:\timeexamples.csv";
-        }
-
-        
-        
-        public static string GetEmailFolderPath()
-        {
-            return @"G:\Data\Email";
-        }
+      
         
         public static bool GetCM(string cmstring, out string clientstr, out string matterstr)
         {
@@ -342,10 +329,10 @@ namespace TimeIngest
             }
             else
             {
-                Console.WriteLine("Processing: " + cmstring);
+                //Console.WriteLine("Processing: " + cmstring);
                 foreach (var k in GetMatterDictionary())
                 {
-                    Console.WriteLine(k.Key + "::" + cmstring);
+                    //Console.WriteLine(k.Key + "::" + cmstring);
                     if(k.Key.Contains(cmstring))
                     {
                         try 
@@ -365,7 +352,7 @@ namespace TimeIngest
                     }
                 }
 
-                Console.WriteLine("MATTER CLIENT LOOKUP -- FAILURE!!!");
+                //Console.WriteLine("MATTER CLIENT LOOKUP -- FAILURE!!!");
                 clientstr = "0000";
                 matterstr = "00000";
                 return false;
